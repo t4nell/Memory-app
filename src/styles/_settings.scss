@@ -1,0 +1,160 @@
+@use 'variables' as *;
+
+#settings-screen {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    
+    &.active {
+        @include center;
+    }
+}
+
+.settings-content {
+    width: 90%;
+    max-width: 1200px;
+}
+
+.settings-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #1a1a1a;
+    border-bottom: 4px solid #c8a82d;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    margin-bottom: 3rem;
+}
+
+.settings-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 3rem;
+}
+
+.settings-options {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.settings-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #1a1a1a;
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .settings-icon {
+            width: 32px;
+            height: 32px;
+        }
+    }
+
+    label {
+        font-size: 1.5rem;
+        color: #333;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.2rem 0;
+        padding-left: 2.7rem;
+
+        &:has(input:checked) {
+            font-weight: bold;
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #333;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+
+            &:checked {
+                border-width: 2px;
+            }
+
+            &:checked::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 8px;
+                height: 8px;
+                background-color: #000000;
+                border-radius: 50%;
+            }
+        }
+    }
+}
+
+
+.settings-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 78px;
+}
+
+
+.settings-preview {
+    flex: 1;
+    display: flex;
+    justify-content: end;
+
+
+    img {
+        max-width: 100%;
+        max-height: 412px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.settings-nav {
+    @include center;
+    gap: 16px;
+    background-color: #F6F6F6;
+    padding: 14px 20px;
+    width: calc(100% - 40px);
+
+    .nav-item {
+        color: #353535;
+        font-size: 20px;
+
+        &.active {
+            color: rgb(0, 0, 0);
+        }
+    }
+
+    .nav-separator {
+        display: inline-block;
+        width: 24px;
+        height: 53px;
+        background: url('/assets/images/settings_screen_icons/navSeparator.png') no-repeat center / contain;
+    }
+
+    .start-btn {
+        background: url('/assets/images/settings_screen_icons/navButton.png') no-repeat center / contain;
+        border: none;
+        width: 126px;
+        height: 53px;
+        cursor: pointer;
+    }
+}
+

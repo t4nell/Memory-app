@@ -4,10 +4,21 @@
     width: 100%;
     height: 100%;
     background-color: #303131;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-};
+    position: relative;
+    
+    &.active {
+        @include center;
+    }
+}
+
+
+.home-corner-img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 350px;
+    pointer-events: none;
+}
 
 .home-text {
     color: white;
@@ -20,16 +31,21 @@
         font-size: 8.75rem;
         padding: $padding-16tb;
     }
-};
+}
 
-.home-actions{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.home-actions {
+    @include center;
     padding: $padding-16tb;
 
     button{
-        font-size: 3rem;
+        width: 320px;
+        height: 100px;
+        background: url('/assets/images/primary_button/primaryButtonDefault.png') no-repeat center / contain;
+        border: none;
         cursor: pointer;
+
+        &:hover {
+            background-image: url('/assets/images/primary_button/primaryButtonHover.png');
+        }
     }
-};
+}

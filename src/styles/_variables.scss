@@ -1,1 +1,7 @@
 $padding-16tb: 1rem 0;
+
+@mixin center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
