@@ -16,13 +16,19 @@
 }
 
 .settings-title {
+    text-align: center;
     font-size: 3.5rem;
-    font-weight: bold;
-    color: #1a1a1a;
-    border-bottom: 4px solid #c8a82d;
+    font-weight: 700;
     display: inline-block;
-    padding-bottom: 0.5rem;
     margin-bottom: 3rem;
+
+    &::after {
+        content: '';
+        display: block;
+        width: 251px;
+        height: 32px;
+        background: url('/assets/images/settings_screen_icons/headlineUnderline.png') no-repeat left / contain;
+    }
 }
 
 .settings-body {
@@ -71,6 +77,14 @@
 
         &:has(input:checked) {
             font-weight: bold;
+
+            &::after {
+                content: '';
+                display: inline-block;
+                width: 41px;
+                height: 24px;
+                background: url('/assets/images/settings_screen_icons/settingsMarker.png') no-repeat center / contain;
+            }
         }
 
         input[type="radio"] {
@@ -131,7 +145,6 @@
     gap: 16px;
     background-color: #F6F6F6;
     padding: 14px 20px;
-    width: calc(100% - 40px);
 
     .nav-item {
         color: #353535;
@@ -146,15 +159,14 @@
         display: inline-block;
         width: 24px;
         height: 53px;
-        background: url('/assets/images/settings_screen_icons/navSeparator.png') no-repeat center / contain;
+        background: url('/assets/images/settings_screen_icons/navSeparator1.png') no-repeat center / contain;
     }
 
     .start-btn {
-        background: url('/assets/images/settings_screen_icons/navButton.png') no-repeat center / contain;
+        background: url('/assets/images/settings_screen_icons/navButtonDisabled.png') no-repeat center / contain;
         border: none;
         width: 126px;
         height: 53px;
-        cursor: pointer;
     }
 }
 
