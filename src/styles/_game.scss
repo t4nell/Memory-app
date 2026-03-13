@@ -1,0 +1,152 @@
+@use 'variables' as *;
+
+#game-screen {
+    width: 100%;
+    height: 100%;
+
+    &.theme-code_vibes {
+        background-color: #303131;
+    }
+    &.theme-gaming {
+        background-color: #294f60;
+    }
+    &.theme-da_projects {
+        background-color: #ffffff;
+    }
+    &.theme-foods {
+        background-color: #ffffff;
+    }
+
+    &.active {
+        @include center;
+    }
+}
+
+.game-content {
+    width: 100%;
+    max-width: 1440px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+    padding: 1rem 2rem;
+    margin-top: 32px;
+    border-radius: 8px;
+
+    #game-screen.theme-code_vibes & {
+        background-color: #303131;
+    }
+    #game-screen.theme-gaming & {
+        background-color: rgba(253, 150, 201, 0.2);
+    }
+    #game-screen.theme-da_projects & {
+        background-color: #f0f3f4;
+    }
+    #game-screen.theme-foods & {
+        background-color: #f0e5d9;
+    }
+}
+
+.game-score {
+    display: flex;
+    gap: 0.5rem;
+    background-color: white;
+    border-radius: 4px;
+
+    #game-screen.theme-code_vibes & {
+        background-color: #86E9D633;
+    }
+
+    .score {
+        padding: 0.4rem 0.8rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .score-icon {
+            height: 24px;
+        }
+
+        &.blue {
+            color: #2196F3;
+        }
+
+        &.orange {
+            color: #FF9800;
+        }
+    }
+}
+
+.game-current-player {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    gap: 0.5rem;
+
+    #game-screen.theme-da_projects & {
+        color: #1E7594;
+    }
+
+    #game-screen.theme-foods & {
+        color: #A45212;
+    }
+
+    .player-icon {
+        display: inline-block;
+        height: 24px;
+        border-radius: 4px;
+    }
+}
+
+.exit-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    img {
+        height: 40px;
+        width: 133px;
+        object-fit: contain;
+    }
+}
+
+
+.game-board {
+    flex: 1;
+    @include center;
+    padding: 2rem;
+    padding-bottom: 0;
+
+    display: grid;
+    gap: 8px;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+.card {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 12px;
+    }
+}
+

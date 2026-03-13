@@ -1,6 +1,7 @@
 import './styles/styles.scss'
 import { initHomeScreen } from './screens/_home'
 import { initSettingsScreen } from './screens/_settings'
+import { initGameScreen } from './screens/_game'
 import { GameSettings } from './types/types'
 
 function showScreen(screenId: string) {
@@ -13,7 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initHomeScreen(showScreen);
 
     initSettingsScreen((settings: GameSettings) => {
-        console.log('Game startet mit:', settings);
         showScreen('game-screen');
+        initGameScreen(settings, () => {
+            showScreen('settings-screen');
+        });
     });
 });

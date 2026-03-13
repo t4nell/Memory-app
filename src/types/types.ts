@@ -7,3 +7,15 @@ export interface GameSettings {
     player: Player;
     boardSize: BoardSize;
 }
+
+export interface ThemeData {
+    cardBack: string;
+    cards: string[];
+    exitButtonDefault: string;
+    exitButtonHover: string;
+    currentPlayerIconBlue: string;
+    currentPlayerIconOrange: string;
+    scoreBlue: string;
+    scoreOrange: string;
+    matchStatus: string;
+}

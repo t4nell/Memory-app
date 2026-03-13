@@ -33,7 +33,6 @@
                             <label><input type="radio" name="theme" value="da_projects"> DA Projects</label>
                             <label><input type="radio" name="theme" value="foods"> Food</label>
                         </form>
-
                         <form class="settings-group" id="player-group" autocomplete="off">
                             <h2><img src="/assets/images/settings_screen_icons/choosePlayerIcon.png" alt="" class="settings-icon"> Choose player</h2>
                             <label><input type="radio" name="player" value="blue"> Blue</label>
@@ -47,7 +46,6 @@
                             <label><input type="radio" name="boardsize" value="36"> 36 cards</label>
                         </form>
                     </div>
-
                     <div class="settings-right">
                         <div class="settings-preview">
                             <img id="theme-preview-img" src="/assets/images/themes/theme_version/codeVibes.png" alt="Theme Preview">
@@ -64,7 +62,33 @@
                 </div>  
             </div>
         </section>
-        <section id="game-screen" class="screen">...</section>
+
+        <section id="game-screen" class="screen">
+            <div class="game-content">
+                <div class="game-header">
+                    <div class="game-score">
+                        <span class="score blue">
+                            <img id="score-blue-icon" class="score-icon" src="" alt="blue">
+                            <span id="score-blue">0</span>
+                        </span>
+                        <span class="score orange">
+                            <img id="score-orange-icon" class="score-icon" src="" alt="orange">
+                            <span id="score-orange">0</span>
+                        </span>
+                    </div>
+                    <div class="game-current-player">
+                        Current player: <div class="playerIconContainer"><img id="current-player-icon" class="player-icon" src="" alt="player"></div>
+                    </div>
+                    <button class="exit-btn" id="exit-btn">
+                        <img id="exit-btn-img" src="" alt="exit">
+                    </button>
+                </div>
+
+                <div class="game-board" id="game-board">
+                    <!-- Karten werden per TypeScript generiert -->
+                </div>
+            </div>
+        </section>
     </div>
     
     <script type="module" src="/src/main.ts"></script>
