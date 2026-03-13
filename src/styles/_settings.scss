@@ -141,10 +141,13 @@
 }
 
 .settings-nav {
-    @include center;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     gap: 16px;
     background-color: #F6F6F6;
     padding: 14px 20px;
+    width: 490px;
 
     .nav-item {
         color: #353535;
@@ -167,6 +170,15 @@
         border: none;
         width: 126px;
         height: 53px;
+
+        &.active {
+            background-image: url('/assets/images/settings_screen_icons/navButtonDefault.png');
+            cursor: pointer;
+
+            &:hover {
+                background-image: url('/assets/images/settings_screen_icons/navButtonHover.png');
+            }
+        }
     }
 }
 

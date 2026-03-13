@@ -26,23 +26,23 @@
                 <h2 class="settings-title">Settings</h2>
                 <div class="settings-body">
                     <div class="settings-options">
-                        <form class="settings-group" autocomplete="off">
+                        <form class="settings-group" id="theme-group" autocomplete="off">
                             <h2><img src="/assets/images/settings_screen_icons/gameThemesIcon.png" alt="" class="settings-icon"> Game themes</h2>
-                            <label><input type="radio" name="theme" value="code_vibes" checked> Code vibes theme</label>
-                            <label><input type="radio" name="theme" value="gaming"> Gaming theme</label>
-                            <label><input type="radio" name="theme" value="da_projects"> DA Projects theme</label>
-                            <label><input type="radio" name="theme" value="foods"> Foods theme</label>
+                            <label><input type="radio" name="theme" value="code_vibes" checked> Code vibes</label>
+                            <label><input type="radio" name="theme" value="gaming"> Gaming</label>
+                            <label><input type="radio" name="theme" value="da_projects"> DA Projects</label>
+                            <label><input type="radio" name="theme" value="foods"> Food</label>
                         </form>
 
-                        <form class="settings-group" autocomplete="off">
+                        <form class="settings-group" id="player-group" autocomplete="off">
                             <h2><img src="/assets/images/settings_screen_icons/choosePlayerIcon.png" alt="" class="settings-icon"> Choose player</h2>
                             <label><input type="radio" name="player" value="blue"> Blue</label>
                             <label><input type="radio" name="player" value="orange"> Orange</label>
                         </form>
 
-                        <form class="settings-group" autocomplete="off">
+                        <form class="settings-group" id="boardsize-group" autocomplete="off">
                             <h2><img src="/assets/images/settings_screen_icons/boardSizeIcon.png" alt="" class="settings-icon"> Board size</h2>
-                            <label><input type="radio" name="boardsize" value="16"> 16 cards</label>
+                            <label><input type="radio" name="boardsize" value="16" checked> 16 cards</label>
                             <label><input type="radio" name="boardsize" value="24"> 24 cards</label>
                             <label><input type="radio" name="boardsize" value="36"> 36 cards</label>
                         </form>
@@ -53,12 +53,12 @@
                             <img id="theme-preview-img" src="/assets/images/themes/theme_version/codeVibes.png" alt="Theme Preview">
                         </div>
                         <nav class="settings-nav">
-                            <span class="nav-item active">Theme</span>
+                            <span class="nav-item" id="nav-theme"></span>
                             <span class="nav-separator"></span>
-                            <span class="nav-item">Player</span>
+                            <span class="nav-item" id="nav-player">Player</span>
                             <span class="nav-separator"></span>
-                            <span class="nav-item">Board size</span>
-                            <button class="start-btn" disabled></button>
+                            <span class="nav-item" id="nav-boardsize">Board size</span>
+                            <button class="start-btn" id="start-btn" disabled></button>
                         </nav>
                     </div>
                 </div>  
