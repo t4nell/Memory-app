@@ -12,6 +12,10 @@ function createThemeData(folder: string): ThemeData {
         scoreBlue: `${base}/gamePointCounterBlue.png`,
         scoreOrange: `${base}/gamePointCounterOrange.png`,
         matchStatus: `${base}/matchStatus.png`,
+        popUpButtonBackDefault: `${base}/popUpButtonBackDefault.png`,
+        popUpButtonBackHover: `${base}/popUpButtonBackHover.png`,
+        popUpButtonExitDefault: `${base}/popUpButtonExitDefault.png`,
+        popUpButtonExitHover: `${base}/popUpButtonExitHover.png`,
     };
 }
 

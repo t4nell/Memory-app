@@ -84,11 +84,28 @@
                     </button>
                 </div>
 
-                <div class="game-board" id="game-board">
-                    <!-- Karten werden per TypeScript generiert -->
-                </div>
+                <div class="game-board" id="game-board"></div>
+
+                <template id="card-template">
+                    <div class="card">
+                        <img class="card-back" />
+                        <img class="card-front" />
+                    </div>
+                </template>
+
             </div>
         </section>
+    </div>
+
+    <div id="popup-overlay" class="popup-overlay"></div>
+    <div id="quit-popup" class="popup">
+        <div class="popup-content">
+            <h2>Are you sure you want to quit the game?</h2>
+            <div class="popup-actions">
+                <button class="popup-btn-border"><img id="popup-back-btn" class="popup-btn-img" src="" alt="Back to game"></button>
+                <button class="popup-btn-border"><img id="popup-exit-btn" class="popup-btn-img" src="" alt="Exit game"></button>
+            </div>
+        </div>
     </div>
     
     <script type="module" src="/src/main.ts"></script>

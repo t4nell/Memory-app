@@ -18,4 +18,8 @@ export interface ThemeData {
     scoreBlue: string;
     scoreOrange: string;
     matchStatus: string;
+    popUpButtonBackDefault: string;
+    popUpButtonBackHover: string;
+    popUpButtonExitDefault: string;
+    popUpButtonExitHover: string;
 }
