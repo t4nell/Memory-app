@@ -3,6 +3,7 @@ import { themes } from '../data/themes';
 
 export function initGameScreen(settings: GameSettings, onExit: () => void): void {
     const themeData = themes[settings.theme];
+    let flippedCards: HTMLElement[] = [];
 
     const board = document.getElementById('game-board')!;
     const scoreBlueIcon = document.getElementById('score-blue-icon') as HTMLImageElement;
@@ -66,7 +67,9 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
     }
 
     // Board leeren und Karten einfügen
-    board.innerHTML = '';
+    board.replaceWith(board.cloneNode(true)); // entfernt alle alten Event-Handler
+    const newBoard = document.getElementById('game-board')!;
+    newBoard.innerHTML = '';
     const template = document.getElementById('card-template') as HTMLTemplateElement;
     allCards.forEach((cardImg, index) => {
         const card = template.content.firstElementChild!.cloneNode(true) as HTMLElement;
@@ -86,14 +89,38 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
             back.alt = 'card front';
         }
 
-        board.appendChild(card);
+        newBoard.appendChild(card);
     });
 
     // Karten-Klick: Karte umdrehen
-    board.addEventListener('click', (e) => {
-        const card = (e.target as HTMLElement).closest('.card');
-        if (card) {
-            card.classList.toggle('is-flipped');
+    newBoard.addEventListener('click', (e) => {
+        const card = (e.target as HTMLElement).closest('.card') as HTMLElement | null;
+        if (!card) return;
+        if (card.classList.contains('is-flipped') || flippedCards.includes(card)) return;
+
+        card.classList.add('is-flipped');
+        flippedCards.push(card);
+
+        if (flippedCards.length === 2) {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.cardImg === card2.dataset.cardImg) {
+                // Paar gefunden
+                addPoint(currentPlayer);
+                flippedCards = [];
+                // Spieler bleibt dran
+            } else {
+                // Kein Paar: nach kurzer Zeit zurückdrehen und Spieler wechseln
+                setTimeout(() => {
+                    card1.classList.remove('is-flipped');
+                    card2.classList.remove('is-flipped');
+                    flippedCards = [];
+                    // Spieler wechseln
+                    currentPlayer = currentPlayer === 'blue' ? 'orange' : 'blue';
+                    playerIcon.src = currentPlayer === 'blue'
+                        ? themeData.currentPlayerIconBlue
+                        : themeData.currentPlayerIconOrange;
+                }, 500); // 0.5 Sekunden warten
+            }
         }
     });
 
@@ -104,11 +131,38 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
         popupBackBtn.src = themeData.popUpButtonBackDefault;
         popupBackBtn.onmouseenter = () => popupBackBtn.src = themeData.popUpButtonBackHover;
         popupBackBtn.onmouseleave = () => popupBackBtn.src = themeData.popUpButtonBackDefault;
-    }
+        popupBackBtn.onclick = () => {
+            if (quitPopup) quitPopup.classList.remove('show');
+            if (overlay) overlay.classList.remove('show');
+        };
+    };
     if (popupExitBtn) {
         popupExitBtn.src = themeData.popUpButtonExitDefault;
         popupExitBtn.onmouseenter = () => popupExitBtn.src = themeData.popUpButtonExitHover;
         popupExitBtn.onmouseleave = () => popupExitBtn.src = themeData.popUpButtonExitDefault;
-    }
-}
+        popupExitBtn.onclick = () => {
+            if (quitPopup) quitPopup.classList.remove('show');
+            if (overlay) overlay.classList.remove('show');
+            onExit(); // Wechselt zur Settings-Seite
+        };
+    };
 
+    let scoreBlue = 0;
+    let scoreOrange = 0;
+    updateScoreDisplay();
+    let currentPlayer: 'blue' | 'orange' = settings.player;
+
+
+    function updateScoreDisplay() {
+        const blueElem = document.getElementById('score-blue');
+        const orangeElem = document.getElementById('score-orange');
+        if (blueElem) blueElem.textContent = scoreBlue.toString();
+        if (orangeElem) orangeElem.textContent = scoreOrange.toString();
+    };
+
+    function addPoint(player: 'blue' | 'orange') {
+        if (player === 'blue') scoreBlue++;
+        else scoreOrange++;
+        updateScoreDisplay();
+    };
+}
