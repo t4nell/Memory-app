@@ -1,4 +1,4 @@
-import { GameSettings } from '../types/types';
+import { GameSettings, ThemeData } from '../types/types';
 import { themes } from '../data/themes';
 
 export function initGameScreen(settings: GameSettings, onExit: () => void): void {
@@ -108,6 +108,7 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
                 addPoint(currentPlayer);
                 flippedCards = [];
                 // Spieler bleibt dran
+                checkGameOver();
             } else {
                 // Kein Paar: nach kurzer Zeit zurückdrehen und Spieler wechseln
                 setTimeout(() => {
@@ -164,5 +165,30 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
         if (player === 'blue') scoreBlue++;
         else scoreOrange++;
         updateScoreDisplay();
+    };
+
+    function checkGameOver() {
+        // Prüfe, ob alle Karten das Attribut 'is-flipped' haben
+        const allCards = newBoard.querySelectorAll('.card');
+        const allFlipped = Array.from(allCards).every(card => card.classList.contains('is-flipped'));
+        if (allFlipped) {
+            setTimeout(() => {
+                showGameOver(scoreBlue, scoreOrange, themeData);
+            }, 2000);
+        }
+    };
+
+    function showGameOver(scoreBlue: number, scoreOrange: number, themeData: ThemeData) {
+        // Punkte setzen
+        (document.getElementById('gameover-score-blue') as HTMLElement).textContent = scoreBlue.toString();
+        (document.getElementById('gameover-score-orange') as HTMLElement).textContent = scoreOrange.toString();
+
+        // Icons anpassen
+        (document.getElementById('gameover-score-blue-icon') as HTMLImageElement).src = themeData.scoreBlue;
+        (document.getElementById('gameover-score-orange-icon') as HTMLImageElement).src = themeData.scoreOrange;
+
+        // Nur Game-Over-Screen anzeigen
+        (document.getElementById('game-screen') as HTMLElement).classList.remove('active');
+        (document.getElementById('gameover-screen') as HTMLElement).classList.add('active');
     };
 }
