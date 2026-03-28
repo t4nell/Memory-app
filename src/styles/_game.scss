@@ -4,22 +4,7 @@
     width: 100%;
     height: 100%;
 
-    &.theme-code_vibes {
-        background-color: #303131;
-        font-family: 'Red Rose', Arial, sans-serif;
-    }
-    &.theme-gaming {
-        background-color: #294f60;
-        font-family: 'Orbitron', Arial, sans-serif;
-    }
-    &.theme-da_projects {
-        background-color: #ffffff;
-        font-family: 'Figtree', Arial, sans-serif;
-    }
-    &.theme-foods {
-        background-color: #ffffff;
-        font-family: 'Klee One', Arial, sans-serif;
-    }
+
 
     &.active {
         @include center;
@@ -43,30 +28,11 @@
     padding: 1rem 2rem;
     margin-top: 32px;
     border-radius: 8px;
-
-    #game-screen.theme-code_vibes & {
-        background-color: #303131;
-    }
-    #game-screen.theme-gaming & {
-        background-color: rgba(253, 150, 201, 0.2);
-    }
-    #game-screen.theme-da_projects & {
-        background-color: #f0f3f4;
-    }
-    #game-screen.theme-foods & {
-        background-color: #f0e5d9;
-    }
 }
 
 .game-score {
     display: flex;
     gap: 0.5rem;
-    background-color: white;
-    border-radius: 4px;
-
-    #game-screen.theme-code_vibes & {
-        background-color: #86E9D633;
-    }
 
     .score {
         padding: 0.4rem 0.8rem;

@@ -4,12 +4,8 @@
 @use 'game';
 @use 'popup';
 @use 'game-over';
+@use 'win-screen';
 
-// Themes
-@use 'themes/coding-vibes';
-@use 'themes/gaming';
-@use 'themes/da-projects';
-@use 'themes/foods';
 
 // Font-Faces
 @font-face {
@@ -18,22 +14,11 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'Almarai';
   src: url('/assets/fonts/Almarai/Almarai-Bold.ttf') format('truetype');
   font-weight: bold;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Almarai';
-  src: url('/assets/fonts/Almarai/Almarai-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Almarai';
-  src: url('/assets/fonts/Almarai/Almarai-ExtraBold.ttf') format('truetype');
-  font-weight: 800;
   font-style: normal;
 }
 
@@ -43,6 +28,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'Red Rose';
   src: url('/assets/fonts/Red_Rose/static/RedRose-Bold.ttf') format('truetype');
@@ -56,6 +42,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'Orbitron';
   src: url('/assets/fonts/Orbitron/static/Orbitron-Bold.ttf') format('truetype');
@@ -69,6 +56,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'Figtree';
   src: url('/assets/fonts/Figtree/static/Figtree-Bold.ttf') format('truetype');
@@ -82,6 +70,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'Klee One';
   src: url('/assets/fonts/Klee_One/KleeOne-SemiBold.ttf') format('truetype');
@@ -114,9 +103,4 @@ body{
   &.active {
     display: block;
   }
-}
-
-// Headline fonts
-h1, h2, .settings-title {
-  font-family: 'Red Rose', Arial, sans-serif;
 }

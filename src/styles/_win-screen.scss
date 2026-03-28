@@ -1,0 +1,26 @@
+@use 'variables' as *;
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+#win-screen {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+
+    &.active {
+        @include center;
+    }
+
+    &.slide-in {
+        animation: slideDown 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}

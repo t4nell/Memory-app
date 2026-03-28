@@ -5,9 +5,13 @@
     height: 100%;
     background-color: #303131;
     position: relative;
-    
+    font-family: 'Almarai', Arial, sans-serif;
     &.active {
         @include center;
+    }
+
+    & h1, & h2 {
+        font-family: 'Red Rose', Arial, sans-serif;
     }
 }
 

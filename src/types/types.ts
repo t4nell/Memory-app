@@ -22,4 +22,13 @@ export interface ThemeData {
     popUpButtonBackHover: string;
     popUpButtonExitDefault: string;
     popUpButtonExitHover: string;
+    backgroundColor: string;
+    headerBackgroundColor: string;
+    gameScoreBackgroundColor: string;
+    currentPlayerColor: string;
+    popupTextColor: string;
+    fontFamily: string;
+    gameOverTitleColor: string;
+    gameOverBackgroundColor: string;
+    winScreenBackgroundColor: string;
 }

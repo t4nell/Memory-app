@@ -11,16 +11,47 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
     const playerIcon = document.getElementById('current-player-icon') as HTMLImageElement;
     const exitBtn = document.getElementById('exit-btn') as HTMLButtonElement;
     const exitBtnImg = document.getElementById('exit-btn-img') as HTMLImageElement;
-
     const gameScreen = document.getElementById('game-screen')!;
-    // Alte Theme-Klassen entfernen
-    gameScreen.classList.remove('theme-code_vibes', 'theme-gaming', 'theme-da_projects', 'theme-foods');
-    // Neue Theme-Klasse setzen
-    gameScreen.classList.add(`theme-${settings.theme}`);
+    const gameHeader = gameScreen.querySelector('.game-header') as HTMLElement;
+    const gameScore = gameScreen.querySelector('.game-score') as HTMLElement;
+    const currentPlayerElem = gameScreen.querySelector('.game-current-player') as HTMLElement;
+    const quitPopup = document.getElementById('quit-popup');
+    const overlay = document.getElementById('popup-overlay');
+
+    // Hintergrundfarbe dynamisch setzen
+    gameScreen.style.backgroundColor = themeData.backgroundColor;
+
+    // Schriftart dynamisch setzen
+    gameScreen.style.fontFamily = themeData.fontFamily;
+
+    // Game-Header Hintergrundfarbe dynamisch setzen
+    
+    if (gameHeader) {
+        gameHeader.style.backgroundColor = themeData.headerBackgroundColor;
+    }
+
+    // Game-Score Hintergrundfarbe dynamisch setzen
+    
+    if (gameScore) {
+        gameScore.style.backgroundColor = themeData.gameScoreBackgroundColor;
+    }
+    
+    // Aktuelle Spieler-Farbe dynamisch setzen
+    
+    if (currentPlayerElem) {
+        currentPlayerElem.style.color = themeData.currentPlayerColor;
+    } 
+
+    // Popup-Textfarbe dynamisch setzen
+    if (quitPopup) {
+        quitPopup.style.color = themeData.popupTextColor;
+        quitPopup.style.fontFamily = themeData.fontFamily;
+    }
 
     // Score-Bilder setzen
     scoreBlueIcon.src = themeData.scoreBlue;
     scoreOrangeIcon.src = themeData.scoreOrange;
+
     // Aktuellen Spieler-Icon setzen
     playerIcon.src = settings.player === 'blue'
         ? themeData.currentPlayerIconBlue
@@ -32,8 +63,7 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
     exitBtn.onmouseleave = () => exitBtnImg.src = themeData.exitButtonDefault;
 
     // Exit-Button Click: Popup anzeigen
-    const quitPopup = document.getElementById('quit-popup');
-    const overlay = document.getElementById('popup-overlay');
+    
     exitBtn.onclick = () => {
         if (quitPopup) {
             quitPopup.classList.remove('theme-code_vibes', 'theme-gaming', 'theme-da_projects', 'theme-foods');
@@ -115,12 +145,11 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
                     card1.classList.remove('is-flipped');
                     card2.classList.remove('is-flipped');
                     flippedCards = [];
-                    // Spieler wechseln
                     currentPlayer = currentPlayer === 'blue' ? 'orange' : 'blue';
                     playerIcon.src = currentPlayer === 'blue'
                         ? themeData.currentPlayerIconBlue
                         : themeData.currentPlayerIconOrange;
-                }, 500); // 0.5 Sekunden warten
+                }, 500);
             }
         }
     });
@@ -187,8 +216,37 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
         (document.getElementById('gameover-score-blue-icon') as HTMLImageElement).src = themeData.scoreBlue;
         (document.getElementById('gameover-score-orange-icon') as HTMLImageElement).src = themeData.scoreOrange;
 
+        // Theme-Designs anwenden
+        const gameoverScreen = document.getElementById('gameover-screen') as HTMLElement;
+        if (gameoverScreen) {
+            gameoverScreen.style.backgroundColor = themeData.gameOverBackgroundColor;
+            gameoverScreen.style.fontFamily = themeData.fontFamily;
+        }
+        const gameoverScoreBox = document.getElementById('gameover-score-box') as HTMLElement;
+        if (gameoverScoreBox) {
+            gameoverScoreBox.style.backgroundColor = themeData.gameScoreBackgroundColor;
+        }
+        const gameoverTitle = document.getElementById('gameover-title') as HTMLElement;
+        if (gameoverTitle) {
+            gameoverTitle.style.color = themeData.gameOverTitleColor;
+        }
+
         // Nur Game-Over-Screen anzeigen
         (document.getElementById('game-screen') as HTMLElement).classList.remove('active');
         (document.getElementById('gameover-screen') as HTMLElement).classList.add('active');
-    };
+    
+        // Nach 3 Sekunden Game-Over-Screen ausblenden und Win-Screen einblenden
+        setTimeout(() => {
+            const gameoverScreen = document.getElementById('gameover-screen');
+            const winScreen = document.getElementById('win-screen');
+            if (gameoverScreen) gameoverScreen.classList.remove('active');
+            if (winScreen) {
+                winScreen.classList.add('active');
+                winScreen.classList.remove('slide-in');
+                setTimeout(() => winScreen.classList.add('slide-in'), 10);
+                // HIER Theme-Hintergrund setzen:
+                winScreen.style.backgroundColor = themeData.winScreenBackgroundColor;
+            }
+        }, 3000);
+    }
 }
