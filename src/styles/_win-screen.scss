@@ -24,3 +24,50 @@
         animation: slideDown 1s cubic-bezier(0.4, 0, 0.2, 1);
     }
 }
+
+.win-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding-top: 150px;
+}
+
+.win-top-image {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+.win-subtitle {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.win-player-name {
+    font-size: 6rem;
+    font-weight: bold;
+    margin-bottom: 4rem;
+}
+
+.win-player-icon {
+    height: 400px;
+    margin-bottom: 5rem;
+}
+
+.win-back-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+
+    img { height: 70px; }
+    &:hover {
+      transform: scale(1.1);
+      opacity: 0.85;
+    }  
+}

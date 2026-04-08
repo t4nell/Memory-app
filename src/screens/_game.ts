@@ -244,9 +244,57 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
                 winScreen.classList.add('active');
                 winScreen.classList.remove('slide-in');
                 setTimeout(() => winScreen.classList.add('slide-in'), 10);
-                // HIER Theme-Hintergrund setzen:
+
+                // Winner bestimmen
+                const winner: 'blue' | 'orange' = scoreBlue >= scoreOrange ? 'blue' : 'orange';
+
+                // Top-Image (nur sichtbar wenn vorhanden)
+                const topImg = document.getElementById('win-top-image') as HTMLImageElement;
+                if (themeData.winScreenTopImage) {
+                    topImg.src = themeData.winScreenTopImage;
+                    topImg.style.display = 'block';
+                } else {
+                    topImg.style.display = 'none';
+                }
+
+                // Subtitle
+                const subtitle = winScreen.querySelector('.win-subtitle') as HTMLElement;
+                if (subtitle && themeData.winScreenSubtitleColor) subtitle.style.color = themeData.winScreenSubtitleColor;
+
+                // Gewinner-Name
+                const nameElem = document.getElementById('win-player-name') as HTMLElement;
+                if (nameElem) {
+                    nameElem.textContent = winner === 'blue' ? 'Blue Player' : 'Orange Player';
+                    nameElem.style.color = (winner === 'blue'
+                        ? themeData.winScreenBlueNameColor
+                        : themeData.winScreenOrangeNameColor) ?? '#000000';
+                }
+
+                // Gewinner-Icon
+                const iconElem = document.getElementById('win-player-icon') as HTMLImageElement;
+                if (iconElem) {
+                    iconElem.src = winner === 'blue'
+                        ? themeData.winScreenPlayerIconBlue
+                        : themeData.winScreenPlayerIconOrange;
+                }
+
+                // Back-Button
+                const backBtnImg = document.getElementById('win-back-btn-img') as HTMLImageElement;
+                if (backBtnImg) backBtnImg.src = themeData.winScreenBackButton;
+
+                // Back-Button Click: Spiel zurücksetzen und zu Settings
+                const backBtn = document.getElementById('win-back-btn') as HTMLButtonElement;
+                if (backBtn) {
+                    backBtn.onclick = () => {
+                    winScreen.classList.remove('active', 'slide-in');
+                    onExit();
+                    };
+                }
+
+                // Font + Background
+                winScreen.style.fontFamily = themeData.fontFamily;
                 winScreen.style.backgroundColor = themeData.winScreenBackgroundColor;
             }
         }, 3000);
-    }
+    }    
 }
