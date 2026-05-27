@@ -18,51 +18,41 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
     const quitPopup = document.getElementById('quit-popup');
     const overlay = document.getElementById('popup-overlay');
 
-    // Hintergrundfarbe dynamisch setzen
     gameScreen.style.backgroundColor = themeData.backgroundColor;
 
-    // Schriftart dynamisch setzen
     gameScreen.style.fontFamily = themeData.fontFamily;
 
-    // Game-Header Hintergrundfarbe dynamisch setzen
     
     if (gameHeader) {
         gameHeader.style.backgroundColor = themeData.headerBackgroundColor;
-    }
+    };
 
-    // Game-Score Hintergrundfarbe dynamisch setzen
     
     if (gameScore) {
         gameScore.style.backgroundColor = themeData.gameScoreBackgroundColor;
-    }
+    };
     
-    // Aktuelle Spieler-Farbe dynamisch setzen
     
     if (currentPlayerElem) {
         currentPlayerElem.style.color = themeData.currentPlayerColor;
-    } 
+    };
 
-    // Popup-Textfarbe dynamisch setzen
     if (quitPopup) {
         quitPopup.style.color = themeData.popupTextColor;
         quitPopup.style.fontFamily = themeData.fontFamily;
-    }
+    };
 
-    // Score-Bilder setzen
     scoreBlueIcon.src = themeData.scoreBlue;
     scoreOrangeIcon.src = themeData.scoreOrange;
 
-    // Aktuellen Spieler-Icon setzen
     playerIcon.src = settings.player === 'blue'
         ? themeData.currentPlayerIconBlue
         : themeData.currentPlayerIconOrange;
 
-    // Exit-Button Bild setzen
     exitBtnImg.src = themeData.exitButtonDefault;
     exitBtn.onmouseenter = () => exitBtnImg.src = themeData.exitButtonHover;
     exitBtn.onmouseleave = () => exitBtnImg.src = themeData.exitButtonDefault;
 
-    // Exit-Button Click: Popup anzeigen
     
     exitBtn.onclick = () => {
         if (quitPopup) {
@@ -73,85 +63,83 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
         if (overlay) overlay.classList.add('show');
     };
 
-    // Popup schließen beim Klick außerhalb
     if (overlay) {
         overlay.addEventListener('click', () => {
             if (quitPopup) quitPopup.classList.remove('show');
             overlay.classList.remove('show');
         });
-    }
+    };
 
-    // Board Grid setzen je nach Board-Size
     const cols = settings.boardSize === 16 ? 4 : 6;
     board.style.gridTemplateColumns = `repeat(${cols}, 120px)`;
 
-    // Karten erstellen
     const cardCount = settings.boardSize / 2;
     const selectedCards = themeData.cards.slice(0, cardCount);
     const allCards = [...selectedCards, ...selectedCards];
 
-    // Karten mischen
     for (let i = allCards.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [allCards[i], allCards[j]] = [allCards[j], allCards[i]];
-    }
+    };
 
-    // Board leeren und Karten einfügen
-    board.replaceWith(board.cloneNode(true)); // entfernt alle alten Event-Handler
+    board.replaceWith(board.cloneNode(true));
     const newBoard = document.getElementById('game-board')!;
     newBoard.innerHTML = '';
     const template = document.getElementById('card-template') as HTMLTemplateElement;
-    allCards.forEach((cardImg, index) => {
+
+    function setCardImage(card: HTMLElement, selector: string, src: string, alt: string) {
+        const img = card.querySelector(selector) as HTMLImageElement;
+        if (img) {
+            img.src = src;
+            img.alt = alt;
+        }
+    };
+
+    function appendCard(cardImg: string, index: number) {
         const card = template.content.firstElementChild!.cloneNode(true) as HTMLElement;
         card.id = `card-${index}`;
         card.dataset.cardIndex = String(index);
         card.dataset.cardImg = cardImg;
-
-        const front = card.querySelector('.card-back') as HTMLImageElement;
-        if (front) {
-            front.src = themeData.cardBack;
-            front.alt = 'card back';
-        }
-
-        const back = card.querySelector('.card-front') as HTMLImageElement;
-        if (back) {
-            back.src = cardImg;
-            back.alt = 'card front';
-        }
-
+        setCardImage(card, '.card-back', themeData.cardBack, 'card back');
+        setCardImage(card, '.card-front', cardImg, 'card front');
         newBoard.appendChild(card);
-    });
+    };
 
-    // Karten-Klick: Karte umdrehen
+    allCards.forEach((cardImg, index) => appendCard(cardImg, index));
+
+    function handleCardMatch(card1: HTMLElement, card2: HTMLElement) {
+        addPoint(currentPlayer);
+        flippedCards = [];
+        checkGameOver();
+    };
+
+    function handleCardMismatch(card1: HTMLElement, card2: HTMLElement) {
+        setTimeout(() => {
+            card1.classList.remove('is-flipped');
+            card2.classList.remove('is-flipped');
+            flippedCards = [];
+            currentPlayer = currentPlayer === 'blue' ? 'orange' : 'blue';
+            playerIcon.src = currentPlayer === 'blue'
+                ? themeData.currentPlayerIconBlue
+                : themeData.currentPlayerIconOrange;
+        }, 500);
+    };
+
+    function handleCardFlip(card: HTMLElement) {
+        card.classList.add('is-flipped');
+        flippedCards.push(card);
+        if (flippedCards.length === 2) {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.cardImg === card2.dataset.cardImg) handleCardMatch(card1, card2);
+            else handleCardMismatch(card1, card2);
+        }
+    };
+
     newBoard.addEventListener('click', (e) => {
         const card = (e.target as HTMLElement).closest('.card') as HTMLElement | null;
         if (!card) return;
         if (card.classList.contains('is-flipped') || flippedCards.includes(card)) return;
-
-        card.classList.add('is-flipped');
-        flippedCards.push(card);
-
-        if (flippedCards.length === 2) {
-            const [card1, card2] = flippedCards;
-            if (card1.dataset.cardImg === card2.dataset.cardImg) {
-                // Paar gefunden
-                addPoint(currentPlayer);
-                flippedCards = [];
-                // Spieler bleibt dran
-                checkGameOver();
-            } else {
-                // Kein Paar: nach kurzer Zeit zurückdrehen und Spieler wechseln
-                setTimeout(() => {
-                    card1.classList.remove('is-flipped');
-                    card2.classList.remove('is-flipped');
-                    flippedCards = [];
-                    currentPlayer = currentPlayer === 'blue' ? 'orange' : 'blue';
-                    playerIcon.src = currentPlayer === 'blue'
-                        ? themeData.currentPlayerIconBlue
-                        : themeData.currentPlayerIconOrange;
-                }, 500);
-            }
-        }
+        handleCardFlip(card);
     });
 
     const popupBackBtn = document.getElementById('popup-back-btn') as HTMLImageElement;
@@ -166,6 +154,7 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
             if (overlay) overlay.classList.remove('show');
         };
     };
+
     if (popupExitBtn) {
         popupExitBtn.src = themeData.popUpButtonExitDefault;
         popupExitBtn.onmouseenter = () => popupExitBtn.src = themeData.popUpButtonExitHover;
@@ -173,7 +162,7 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
         popupExitBtn.onclick = () => {
             if (quitPopup) quitPopup.classList.remove('show');
             if (overlay) overlay.classList.remove('show');
-            onExit(); // Wechselt zur Settings-Seite
+            onExit();
         };
     };
 
@@ -197,7 +186,6 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
     };
 
     function checkGameOver() {
-        // Prüfe, ob alle Karten das Attribut 'is-flipped' haben
         const allCards = newBoard.querySelectorAll('.card');
         const allFlipped = Array.from(allCards).every(card => card.classList.contains('is-flipped'));
         if (allFlipped) {
@@ -207,94 +195,63 @@ export function initGameScreen(settings: GameSettings, onExit: () => void): void
         }
     };
 
-    function showGameOver(scoreBlue: number, scoreOrange: number, themeData: ThemeData) {
-        // Punkte setzen
-        (document.getElementById('gameover-score-blue') as HTMLElement).textContent = scoreBlue.toString();
-        (document.getElementById('gameover-score-orange') as HTMLElement).textContent = scoreOrange.toString();
-
-        // Icons anpassen
-        (document.getElementById('gameover-score-blue-icon') as HTMLImageElement).src = themeData.scoreBlue;
-        (document.getElementById('gameover-score-orange-icon') as HTMLImageElement).src = themeData.scoreOrange;
-
-        // Theme-Designs anwenden
+    function applyGameOverStyles(themeData: ThemeData) {
         const gameoverScreen = document.getElementById('gameover-screen') as HTMLElement;
         if (gameoverScreen) {
             gameoverScreen.style.backgroundColor = themeData.gameOverBackgroundColor;
             gameoverScreen.style.fontFamily = themeData.fontFamily;
         }
-        const gameoverScoreBox = document.getElementById('gameover-score-box') as HTMLElement;
-        if (gameoverScoreBox) {
-            gameoverScoreBox.style.backgroundColor = themeData.gameScoreBackgroundColor;
-        }
-        const gameoverTitle = document.getElementById('gameover-title') as HTMLElement;
-        if (gameoverTitle) {
-            gameoverTitle.style.color = themeData.gameOverTitleColor;
-        }
+        const scoreBox = document.getElementById('gameover-score-box') as HTMLElement;
+        if (scoreBox) scoreBox.style.backgroundColor = themeData.gameScoreBackgroundColor;
+        const title = document.getElementById('gameover-title') as HTMLElement;
+        if (title) title.style.color = themeData.gameOverTitleColor;
+    };
 
-        // Nur Game-Over-Screen anzeigen
+    function applyWinScreenStyles(winScreen: HTMLElement, themeData: ThemeData) {
+        winScreen.style.fontFamily = themeData.fontFamily;
+        winScreen.style.backgroundColor = themeData.winScreenBackgroundColor;
+        const subtitle = winScreen.querySelector('.win-subtitle') as HTMLElement;
+        if (subtitle && themeData.winScreenSubtitleColor) subtitle.style.color = themeData.winScreenSubtitleColor;
+        const topImg = document.getElementById('win-top-image') as HTMLImageElement;
+        if (themeData.winScreenTopImage) { topImg.src = themeData.winScreenTopImage; topImg.style.display = 'block'; }
+        else topImg.style.display = 'none';
+    };
+
+    function setWinScreenPlayer(winScreen: HTMLElement, winner: 'blue' | 'orange', themeData: ThemeData) {
+        const nameElem = document.getElementById('win-player-name') as HTMLElement;
+        if (nameElem) {
+            nameElem.textContent = winner === 'blue' ? 'Blue Player' : 'Orange Player';
+            nameElem.style.color = (winner === 'blue' ? themeData.winScreenBlueNameColor : themeData.winScreenOrangeNameColor) ?? '#000000';
+        }
+        const iconElem = document.getElementById('win-player-icon') as HTMLImageElement;
+        if (iconElem) iconElem.src = winner === 'blue' ? themeData.winScreenPlayerIconBlue : themeData.winScreenPlayerIconOrange;
+        const backBtnImg = document.getElementById('win-back-btn-img') as HTMLImageElement;
+        if (backBtnImg) backBtnImg.src = themeData.winScreenBackButton;
+    };
+
+    function showWinScreen(scoreBlue: number, scoreOrange: number, themeData: ThemeData) {
+        const gameoverScreen = document.getElementById('gameover-screen');
+        const winScreen = document.getElementById('win-screen');
+        if (gameoverScreen) gameoverScreen.classList.remove('active');
+        if (!winScreen) return;
+        const winner: 'blue' | 'orange' = scoreBlue >= scoreOrange ? 'blue' : 'orange';
+        winScreen.classList.add('active');
+        winScreen.classList.remove('slide-in');
+        setTimeout(() => winScreen.classList.add('slide-in'), 10);
+        applyWinScreenStyles(winScreen, themeData);
+        setWinScreenPlayer(winScreen, winner, themeData);
+        const backBtn = document.getElementById('win-back-btn') as HTMLButtonElement;
+        if (backBtn) backBtn.onclick = () => { winScreen.classList.remove('active', 'slide-in'); onExit(); };
+    };
+
+    function showGameOver(scoreBlue: number, scoreOrange: number, themeData: ThemeData) {
+        (document.getElementById('gameover-score-blue') as HTMLElement).textContent = scoreBlue.toString();
+        (document.getElementById('gameover-score-orange') as HTMLElement).textContent = scoreOrange.toString();
+        (document.getElementById('gameover-score-blue-icon') as HTMLImageElement).src = themeData.scoreBlue;
+        (document.getElementById('gameover-score-orange-icon') as HTMLImageElement).src = themeData.scoreOrange;
+        applyGameOverStyles(themeData);
         (document.getElementById('game-screen') as HTMLElement).classList.remove('active');
         (document.getElementById('gameover-screen') as HTMLElement).classList.add('active');
-    
-        // Nach 3 Sekunden Game-Over-Screen ausblenden und Win-Screen einblenden
-        setTimeout(() => {
-            const gameoverScreen = document.getElementById('gameover-screen');
-            const winScreen = document.getElementById('win-screen');
-            if (gameoverScreen) gameoverScreen.classList.remove('active');
-            if (winScreen) {
-                winScreen.classList.add('active');
-                winScreen.classList.remove('slide-in');
-                setTimeout(() => winScreen.classList.add('slide-in'), 10);
-
-                // Winner bestimmen
-                const winner: 'blue' | 'orange' = scoreBlue >= scoreOrange ? 'blue' : 'orange';
-
-                // Top-Image (nur sichtbar wenn vorhanden)
-                const topImg = document.getElementById('win-top-image') as HTMLImageElement;
-                if (themeData.winScreenTopImage) {
-                    topImg.src = themeData.winScreenTopImage;
-                    topImg.style.display = 'block';
-                } else {
-                    topImg.style.display = 'none';
-                }
-
-                // Subtitle
-                const subtitle = winScreen.querySelector('.win-subtitle') as HTMLElement;
-                if (subtitle && themeData.winScreenSubtitleColor) subtitle.style.color = themeData.winScreenSubtitleColor;
-
-                // Gewinner-Name
-                const nameElem = document.getElementById('win-player-name') as HTMLElement;
-                if (nameElem) {
-                    nameElem.textContent = winner === 'blue' ? 'Blue Player' : 'Orange Player';
-                    nameElem.style.color = (winner === 'blue'
-                        ? themeData.winScreenBlueNameColor
-                        : themeData.winScreenOrangeNameColor) ?? '#000000';
-                }
-
-                // Gewinner-Icon
-                const iconElem = document.getElementById('win-player-icon') as HTMLImageElement;
-                if (iconElem) {
-                    iconElem.src = winner === 'blue'
-                        ? themeData.winScreenPlayerIconBlue
-                        : themeData.winScreenPlayerIconOrange;
-                }
-
-                // Back-Button
-                const backBtnImg = document.getElementById('win-back-btn-img') as HTMLImageElement;
-                if (backBtnImg) backBtnImg.src = themeData.winScreenBackButton;
-
-                // Back-Button Click: Spiel zurücksetzen und zu Settings
-                const backBtn = document.getElementById('win-back-btn') as HTMLButtonElement;
-                if (backBtn) {
-                    backBtn.onclick = () => {
-                    winScreen.classList.remove('active', 'slide-in');
-                    onExit();
-                    };
-                }
-
-                // Font + Background
-                winScreen.style.fontFamily = themeData.fontFamily;
-                winScreen.style.backgroundColor = themeData.winScreenBackgroundColor;
-            }
-        }, 3000);
-    }    
-}
+        setTimeout(() => showWinScreen(scoreBlue, scoreOrange, themeData), 3000);
+    };
+};

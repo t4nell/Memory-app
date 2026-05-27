@@ -31,11 +31,11 @@ export interface ThemeData {
     gameOverTitleColor: string;
     gameOverBackgroundColor: string;
     winScreenBackgroundColor: string;
-    winScreenTopImage: string;           // Konfetti-Bild (leerer String wenn keins)
-    winScreenPlayerIconBlue: string;     // Gewinner-Icon für Blue
-    winScreenPlayerIconOrange: string;   // Gewinner-Icon für Orange
-    winScreenBackButton: string;         // Back/Home Button
-    winScreenSubtitleColor?: string;     // Farbe für "The winner is"
-    winScreenBlueNameColor?: string;     // Farbe für "Blue Player" Text
-    winScreenOrangeNameColor?: string;   // Farbe für "Orange Player" Text
+    winScreenTopImage: string;           
+    winScreenPlayerIconBlue: string;     
+    winScreenPlayerIconOrange: string;   
+    winScreenBackButton: string;         
+    winScreenSubtitleColor?: string;     
+    winScreenBlueNameColor?: string;     
+    winScreenOrangeNameColor?: string;   
 }

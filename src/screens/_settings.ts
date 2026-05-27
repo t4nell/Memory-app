@@ -28,33 +28,28 @@ export function initSettingsScreen(onStart: (settings: GameSettings) => void): v
     const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
     const previewImg = document.getElementById('theme-preview-img') as HTMLImageElement;
 
+    function updateNavLabel(input: HTMLInputElement | null, navEl: HTMLElement, fallback: string) {
+        if (input) {
+            navEl.textContent = input.closest('label')?.textContent?.trim() || fallback;
+            navEl.classList.add('active');
+        }
+    }
+
+    function updateStartButton(settings: GameSettings | null) {
+        startBtn.disabled = !settings;
+        startBtn.classList.toggle('active', !!settings);
+    }
+
     function updateNav() {
         const settings = getSettings();
-
         const themeInput = (document.getElementById('theme-group') as HTMLFormElement).querySelector<HTMLInputElement>('input:checked');
         const playerInput = (document.getElementById('player-group') as HTMLFormElement).querySelector<HTMLInputElement>('input:checked');
         const boardInput = (document.getElementById('boardsize-group') as HTMLFormElement).querySelector<HTMLInputElement>('input:checked');
 
-        if (themeInput) {
-            navTheme.textContent = themeInput.closest('label')?.textContent?.trim() || 'Theme';
-            navTheme.classList.add('active');
-        }
-        if (playerInput) {
-            navPlayer.textContent = playerInput.closest('label')?.textContent?.trim() || 'Player';
-            navPlayer.classList.add('active');
-        }
-        if (boardInput) {
-            navBoardsize.textContent = boardInput.closest('label')?.textContent?.trim() || 'Board size';
-            navBoardsize.classList.add('active');
-        }
-
-        if (settings) {
-            startBtn.disabled = false;
-            startBtn.classList.add('active');
-        } else {
-            startBtn.disabled = true;
-            startBtn.classList.remove('active');
-        }
+        updateNavLabel(themeInput, navTheme, 'Theme');
+        updateNavLabel(playerInput, navPlayer, 'Player');
+        updateNavLabel(boardInput, navBoardsize, 'Board size');
+        updateStartButton(settings);
     }
 
     document.getElementById('theme-group')!.addEventListener('change', (e) => {

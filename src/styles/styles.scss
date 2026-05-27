@@ -1,4 +1,3 @@
-// Screens
 @use 'home';
 @use 'settings';
 @use 'game';
@@ -7,7 +6,6 @@
 @use 'win-screen';
 
 
-// Font-Faces
 @font-face {
   font-family: 'Almarai';
   src: url('/assets/fonts/Almarai/Almarai-Regular.ttf') format('truetype');
